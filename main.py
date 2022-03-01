@@ -26,9 +26,13 @@ def main():
     print("3. Kategoriniai. Trukstamu reiksmiu procentas:\n", rastiTrukstamuAtributuProcenta(dataKategoriniu),"\n")
     print("3. Kategoriniai. Rasti modas:\n", rastiModas(dataKategoriniu),"\n")
     # print("2. xxxxxxxxxxxxxx:\n", xxxxx(dataTolydiniu),"\n")
-    print("3. Kategoriniai. Modu kiekis:\,",rastiModosDaznumus(dataKategoriniu),'\n')
+    # print("3. Kategoriniai. Modu kiekis:\,",rastiModosDaznumus(dataKategoriniu),'\n')
     print("3. Kategoriniai. Modos procentine reiksme:\n", rastiModuDaznumuProcentus(dataKategoriniu),'\n')
-    print("3. Kategoriniai. Antros modos:\n",rastiAntraModa(dataKategoriniu),'\n')
+    # print("3. Kategoriniai. Antros modos:\n",rastiAntraModa(dataKategoriniu),'\n')
+    print("3. Kategoriniai. Antros modos dažnumai:\n",rastiAntrosModosDaznumus(dataKategoriniu),'\n')
+    print("3. Kategoriniai. Antros modos procentine reiksme:\n", rastiAntruModuDaznumuProcentus(dataKategoriniu),'\n')
+
+
     # print("3. Kategoriniai. Antros modos procentine reiskme:\n", '','\n')
     
 

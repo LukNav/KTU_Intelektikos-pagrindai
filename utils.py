@@ -36,7 +36,9 @@ def rastiStandartiniusNuokrypius(data):
     return data.median()
 
 def rastiModas(data):
-    return data.mode()
+    # return data.mode()
+    return pd.DataFrame({'Columns': data.columns,
+                         'Val': [Counter(data[x]).most_common()[0]  for x in data]})
 
 def rastiModosDaznumus(data):
     return pd.DataFrame({'Columns': data.columns,
@@ -46,9 +48,10 @@ def rastiModuDaznumuProcentus(data):
     return pd.DataFrame({'Columns': data.columns,
                          'Val': [data[x].isin(data[x].mode()).sum()*100/len(data[x])  for x in data]})
 
-def rastiAntraModa(data):
-    return (data.value_counts()[1:2])
-
 def rastiAntrosModosDaznumus(data):
     return pd.DataFrame({'Columns': data.columns,
-                         'Val': [data[x].isin(rastiAntraModa(data[x])).sum()*100/len(data[x])  for x in data]})
+                         'Val': [Counter(data[x]).most_common()[1]  for x in data]})
+
+def rastiAntruModuDaznumuProcentus(data):
+    return pd.DataFrame({'Columns': data.columns,
+                         'Val': [data[x].isin([Counter(data[x]).most_common()[1][0]]).sum()*100/len(data[x])  for x in data]})                        
