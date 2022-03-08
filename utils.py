@@ -1,3 +1,4 @@
+from tkinter.messagebox import YES
 import pandas as pd
 from collections import Counter
 import matplotlib.pyplot as plt
@@ -33,7 +34,7 @@ def rastiMedianas(data):
     return data.median()
 
 def rastiStandartiniusNuokrypius(data):
-    return data.median()
+    return data.std()
 
 def rastiModas(data):
     # return data.mode()
@@ -55,3 +56,74 @@ def rastiAntrosModosDaznumus(data):
 def rastiAntruModuDaznumuProcentus(data):
     return pd.DataFrame({'Columns': data.columns,
                          'Val': [data[x].isin([Counter(data[x]).most_common()[1][0]]).sum()*100/len(data[x])  for x in data]})                        
+
+def salintiOutliers(data):
+    for x in data:
+        q_low = data[x].quantile(0.0005)
+        q_hi = data[x].quantile(0.0095)
+        data = data[(data[x] < q_hi) & (data[x] > q_low)]
+    return data
+
+def plotBar(data, xColumn: str, title=None):
+    data.value_counts(sort=False).plot.bar(rot=0)
+    plt.xlabel(xColumn)
+    plt.ylabel('Kiekis')
+    if title is not None:
+        plt.title(title)
+    plt.xticks(rotation=90)
+    plt.tight_layout()
+    plt.autoscale()
+    plt.show()
+
+def plotBox(data, column: str, title=None):
+    boxplot = data.boxplot(column=[column], grid=False, rot=45, fontsize=15)
+    if title is not None:
+        plt.title(title)
+    plt.show()
+
+def plotScatter(data, xColumn: str, yColumn: str):
+    plt.scatter(data[xColumn], data[yColumn], s=60, alpha=0.6, edgecolor='grey', linewidth=1)
+    plt.xlabel(xColumn)
+    plt.ylabel(yColumn)
+    plt.tight_layout()
+    plt.show()
+
+def plotScatterMatrix(data):
+    pd.plotting.scatter_matrix(data, alpha=0.2)
+    plt.show()
+
+def findCorreleation(data):
+    correlation_mat = data.corr()
+    sns.heatmap(correlation_mat, annot=True)
+    plt.show()
+
+def plot(data):
+    kategoriniaiAtributai = ['Drive', 'Transmission', 'Turbocharger', 'Supercharger', 'Fuel Type']
+    for x in data:
+        plotBar(data[x], xColumn=x, title=x)
+
+    tolydiniaiAtributai = ['Year', 'Engine Cylinders', 'Engine Displacement', 'City MPG', 'Highway MPG', 'Annual Fuel Cost', 'Tailpipe CO2 in Grams/Mile']
+    plotScatter(data, xColumn='Tailpipe CO2 in Grams/Mile', yColumn='Year')
+    plotScatter(data, xColumn='Engine Displacement', yColumn='Engine Cylinders')
+    plotScatter(data, xColumn='City MPG', yColumn='Engine Displacement')
+    plotScatter(data, xColumn='Highway MPG', yColumn='Engine Displacement')
+    plotScatter(data, xColumn='Annual Fuel Cost', yColumn='Year')
+    plotScatterMatrix(data)
+    plotBox(data[data['Drive'] == 'Rear-Wheel Drive'], column='City MPG', title='City MPG & Rear-Wheel Drive')
+    plotBox(data[data['Fuel Type'] == 'Premium'], column='City MPG', title='City MPG & Premium fuel')
+    plotBox(data[data['Transmission'] == 'Manual 5-Speed'], column='Engine Cylinders', title='City MPG & Premium fuel')
+
+def normalize(data):
+    result = data.copy()
+    for x in data:
+        max = data[x].max()
+        min = data[x].min()
+        result[x] = (data[x] - min) / (max - min)
+    return result 
+
+
+
+
+
+
+
