@@ -11,11 +11,9 @@ kategoriniaiAtributai = ['Drive', 'Transmission', 'Turbocharger', 'Supercharger'
 def main():
     data = readData("autodata_custom.csv")
     data.sort_values(by='Year')
-    
-    plot(data)
 
-    # dataTolydiniu=data[tolydiniaiAtributai]
-    # dataKategoriniu=data[kategoriniaiAtributai]
+    dataTolydiniu=data[tolydiniaiAtributai]
+    dataKategoriniu=data[kategoriniaiAtributai]
     # print("2. Tolydieji. Bendras reiksmiu skaicius:\n",rastiAtributuSkaiciu(dataTolydiniu),"\n")
     # print("2. Tolydieji. Trukstamu reiksmiu procentas:\n", rastiTrukstamuAtributuProcenta(dataTolydiniu),"\n")
     # print("2. Tolydieji. Kardinalumai:\n", rastiAtributuKardinalumus(dataTolydiniu),"\n")
@@ -29,8 +27,8 @@ def main():
     # print("3. Kategoriniai. Bendras reiksmiu skaicius:\n", rastiAtributuSkaiciu(dataKategoriniu),"\n")
     # print("3. Kategoriniai. Trukstamu reiksmiu procentas:\n", rastiTrukstamuAtributuProcenta(dataKategoriniu),"\n")
     # print("3. Kategoriniai. Kardinalumai:\n", rastiAtributuKardinalumus(dataKategoriniu),"\n")
-    # print("3. Kategoriniai. Rasti modas:\n", rastiModas(dataKategoriniu),"\n")
-    # # print("2. xxxxxxxxxxxxxx:\n", xxxxx(dataTolydiniu),"\n")
+    # # print("3. Kategoriniai. Rasti modas:\n", rastiModas(dataKategoriniu),"\n")
+    # # # print("2. xxxxxxxxxxxxxx:\n", xxxxx(dataTolydiniu),"\n")
     # # print("3. Kategoriniai. Modu kiekis:\,",rastiModosDaznumus(dataKategoriniu),'\n')
     # print("3. Kategoriniai. Modos procentine reiksme:\n", rastiModuDaznumuProcentus(dataKategoriniu),'\n')
     # # print("3. Kategoriniai. Antros modos:\n",rastiAntraModa(dataKategoriniu),'\n')
@@ -42,6 +40,7 @@ def main():
     # dataTolydiniu_Atfiltruota= salintiOutliers(dataTolydiniu)
     # print("5. Šalinam outliars. Pašalinta atributų:\n", rastiAtributuSkaiciu(dataTolydiniu)-rastiAtributuSkaiciu(dataTolydiniu_Atfiltruota),'\n')
     # print("9. Normalizacija:\n",normalize(dataTolydiniu),'\n')
+    plot(data)
     
     # findCorreleation(dataTolydiniu)
     

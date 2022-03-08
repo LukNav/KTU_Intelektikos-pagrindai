@@ -3,6 +3,9 @@ import pandas as pd
 from collections import Counter
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sympy import Q
+import numpy as np
+from scipy import stats
 
 def readData(fileName):
     mydataset = pd.read_csv(fileName)
@@ -57,12 +60,12 @@ def rastiAntruModuDaznumuProcentus(data):
     return pd.DataFrame({'Columns': data.columns,
                          'Val': [data[x].isin([Counter(data[x]).most_common()[1][0]]).sum()*100/len(data[x])  for x in data]})                        
 
-def salintiOutliers(data):
-    for x in data:
-        q_low = data[x].quantile(0.0005)
-        q_hi = data[x].quantile(0.0095)
-        data = data[(data[x] < q_hi) & (data[x] > q_low)]
-    return data
+def salintiOutliers(df):
+    Q1 = df.quantile(0.25)
+    Q3 = df.quantile(0.75)
+    IQR = Q3 - Q1
+    df = df[~((df < (Q1 - 1.5 * IQR)) | (df > (Q3 + 1.5 * IQR))).any(axis=1)]
+    return df
 
 def plotBar(data, xColumn: str, title=None):
     data.value_counts(sort=False).plot.bar(rot=0)
@@ -89,7 +92,12 @@ def plotScatter(data, xColumn: str, yColumn: str):
     plt.show()
 
 def plotScatterMatrix(data):
-    pd.plotting.scatter_matrix(data, alpha=0.2)
+    axes = pd.plotting.scatter_matrix(data, alpha=0.2)
+    for ax in axes.flatten():
+        ax.xaxis.label.set_rotation(90)
+        ax.yaxis.label.set_rotation(0)
+        ax.yaxis.label.set_ha('right')
+    plt.autoscale()
     plt.show()
 
 def findCorreleation(data):
@@ -99,15 +107,16 @@ def findCorreleation(data):
 
 def plot(data):
     kategoriniaiAtributai = ['Drive', 'Transmission', 'Turbocharger', 'Supercharger', 'Fuel Type']
-    for x in data:
-        plotBar(data[x], xColumn=x, title=x)
+    removedOutliers = salintiOutliers(data)
+    # for x in removedOutliers:
+    #     plotBar(removedOutliers[x], xColumn=x, title=x)
 
-    tolydiniaiAtributai = ['Year', 'Engine Cylinders', 'Engine Displacement', 'City MPG', 'Highway MPG', 'Annual Fuel Cost', 'Tailpipe CO2 in Grams/Mile']
-    plotScatter(data, xColumn='Tailpipe CO2 in Grams/Mile', yColumn='Year')
-    plotScatter(data, xColumn='Engine Displacement', yColumn='Engine Cylinders')
-    plotScatter(data, xColumn='City MPG', yColumn='Engine Displacement')
-    plotScatter(data, xColumn='Highway MPG', yColumn='Engine Displacement')
-    plotScatter(data, xColumn='Annual Fuel Cost', yColumn='Year')
+    # tolydiniaiAtributai = ['Year', 'Engine Cylinders', 'Engine Displacement', 'City MPG', 'Highway MPG', 'Annual Fuel Cost', 'Tailpipe CO2 in Grams/Mile']
+    # plotScatter(data, xColumn='Tailpipe CO2 in Grams/Mile', yColumn='Year')
+    # plotScatter(data, xColumn='Engine Displacement', yColumn='Engine Cylinders')
+    # plotScatter(data, xColumn='City MPG', yColumn='Engine Displacement')
+    # plotScatter(data, xColumn='Highway MPG', yColumn='Engine Displacement')
+    # plotScatter(data, xColumn='Annual Fuel Cost', yColumn='Year')
     plotScatterMatrix(data)
     plotBox(data[data['Drive'] == 'Rear-Wheel Drive'], column='City MPG', title='City MPG & Rear-Wheel Drive')
     plotBox(data[data['Fuel Type'] == 'Premium'], column='City MPG', title='City MPG & Premium fuel')
