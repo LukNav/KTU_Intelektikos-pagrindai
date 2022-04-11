@@ -36,7 +36,7 @@ def main():
     # print("3. Kategoriniai. Antros modos procentine reiksme:\n", rastiAntruModuDaznumuProcentus(dataKategoriniu),'\n')
     # print("4. Rekomanduojamas histogramos stulpelių sk:\n", np.add(1,3.22*np.log(rastiAtributuSkaiciu(data))),'\n')
     
-    # data.dropna()
+    data.dropna()
     # dataTolydiniu_Atfiltruota= salintiOutliers(dataTolydiniu)
     # print("5. Šalinam outliars. Pašalinta atributų:\n", rastiAtributuSkaiciu(dataTolydiniu)-rastiAtributuSkaiciu(dataTolydiniu_Atfiltruota),'\n')
     # print("9. Normalizacija:\n",normalize(dataTolydiniu),'\n')

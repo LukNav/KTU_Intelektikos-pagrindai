@@ -3,7 +3,6 @@ import pandas as pd
 from collections import Counter
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sympy import Q
 import numpy as np
 from scipy import stats
 
@@ -60,12 +59,12 @@ def rastiAntruModuDaznumuProcentus(data):
     return pd.DataFrame({'Columns': data.columns,
                          'Val': [data[x].isin([Counter(data[x]).most_common()[1][0]]).sum()*100/len(data[x])  for x in data]})                        
 
-def salintiOutliers(df):
-    Q1 = df.quantile(0.25)
-    Q3 = df.quantile(0.75)
+def salintiOutliers(data):
+    Q1 = data.quantile(0.25)
+    Q3 = data.quantile(0.75)
     IQR = Q3 - Q1
-    df = df[~((df < (Q1 - 1.5 * IQR)) | (df > (Q3 + 1.5 * IQR))).any(axis=1)]
-    return df
+    data = data[~((data < (Q1 - 1.5 * IQR)) | (data > (Q3 + 1.5 * IQR))).any(axis=1)]
+    return data
 
 def plotBar(data, xColumn: str, title=None):
     data.value_counts(sort=False).plot.bar(rot=0)
@@ -108,8 +107,9 @@ def findCorreleation(data):
 def plot(data):
     kategoriniaiAtributai = ['Drive', 'Transmission', 'Turbocharger', 'Supercharger', 'Fuel Type']
     removedOutliers = salintiOutliers(data)
-    # for x in removedOutliers:
-    #     plotBar(removedOutliers[x], xColumn=x, title=x)
+    removedOutliers = removedOutliers.dropna()
+    for x in removedOutliers:
+        plotBar(removedOutliers[x], xColumn=x, title=x)
 
     # tolydiniaiAtributai = ['Year', 'Engine Cylinders', 'Engine Displacement', 'City MPG', 'Highway MPG', 'Annual Fuel Cost', 'Tailpipe CO2 in Grams/Mile']
     # plotScatter(data, xColumn='Tailpipe CO2 in Grams/Mile', yColumn='Year')
